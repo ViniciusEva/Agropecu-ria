@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de venda | Agropecuária</title>
+    <link rel="stylesheet" th:href="@{/usuarios.css}">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div><p class="eyebrow">GESTÃO RURAL</p><h1 th:text="${edicao} ? 'Editar venda' : 'Nova venda'">Nova venda</h1>
+            <p class="subtitulo">Relacione um cliente e um produto à operação.</p></div>
+        <a class="botao secundario" th:href="@{/painel/vendas}">Voltar</a>
+    </header>
+    <nav class="navegacao" aria-label="Navegação principal">
+        <a th:href="@{/painel}">Visão geral</a><a th:href="@{/painel/clientes}">Clientes</a>
+        <a th:href="@{/painel/produtos}">Produtos</a><a class="selecionado" th:href="@{/painel/vendas}">Vendas</a>
+    </nav>
+    <section class="painel painel-form">
+        <form method="post"
+              th:action="${edicao} ? @{/painel/vendas/{id}(id=${venda.idVenda})} : @{/painel/vendas}">
+            <div class="campos">
+                <label for="clienteId">Cliente <span>*</span>
+                    <select id="clienteId" name="clienteId" required>
+                        <option value="">Selecione um cliente</option>
+                        <option th:each="item : ${clientes}" th:value="${item.idCliente}"
+                                th:selected="${venda.cliente != null and venda.cliente.idCliente == item.idCliente}"
+                                th:text="${item.nomeCliente}">Cliente</option>
+                    </select>
+                </label>
+                <label for="produtoId">Produto <span>*</span>
+                    <select id="produtoId" name="produtoId" required>
+                        <option value="">Selecione um produto</option>
+                        <option th:each="item : ${produtos}" th:value="${item.idProduto}"
+                                th:selected="${venda.produto != null and venda.produto.idProduto == item.idProduto}"
+                                th:text="${item.nomeProduto}">Produto</option>
+                    </select>
+                </label>
+                <label for="dataVenda">Data da venda <span>*</span>
+                    <input id="dataVenda" type="date" name="dataVenda" th:value="${venda.dataVenda}" required>
+                </label>
+                <label for="valorTotal">Valor total (R$) <span>*</span>
+                    <input id="valorTotal" type="number" name="valorTotal" min="0" step="0.01" th:value="${venda.valorTotal}" required>
+                </label>
+                <label for="formaPagamento">Forma de pagamento
+                    <input id="formaPagamento" type="text" name="formaPagamento" maxlength="30" th:value="${venda.formaPagamento}"
+                           placeholder="Ex.: Pix, cartão ou dinheiro">
+                </label>
+            </div>
+            <div class="botoes">
+                <a class="botao secundario" th:href="@{/painel/vendas}">Cancelar</a>
+                <button class="botao principal" type="submit" th:text="${edicao} ? 'Salvar alterações' : 'Registrar venda'">Registrar venda</button>
+            </div>
+        </form>
+    </section>
+    <footer>Cadastre o cliente e o produto antes de registrar uma venda.</footer>
+</main>
+</body>
+</html>

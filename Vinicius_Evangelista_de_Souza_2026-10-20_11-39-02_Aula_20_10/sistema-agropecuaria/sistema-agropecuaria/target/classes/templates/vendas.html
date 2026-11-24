@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vendas | Agropecuária</title>
+    <link rel="stylesheet" th:href="@{/usuarios.css}">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div><p class="eyebrow">GESTÃO RURAL</p><h1>Vendas</h1><p class="subtitulo">Consulte e registre as vendas realizadas.</p></div>
+        <a class="botao principal" th:href="@{/painel/vendas/novo}">Nova venda</a>
+    </header>
+    <nav class="navegacao" aria-label="Navegação principal">
+        <a th:href="@{/painel}">Visão geral</a><a th:href="@{/painel/clientes}">Clientes</a>
+        <a th:href="@{/painel/produtos}">Produtos</a><a class="selecionado" th:href="@{/painel/vendas}">Vendas</a>
+    </nav>
+    <div class="aviso sucesso" role="status" th:if="${mensagem}" th:text="${mensagem}"></div>
+    <section class="painel">
+        <div class="barra"><div><h2>Vendas registradas</h2><p><span th:text="${#lists.size(vendas)}">0</span> registro(s)</p></div></div>
+        <div class="tabela-rolagem">
+            <table aria-label="Vendas registradas">
+                <thead><tr><th>ID</th><th>Data</th><th>Cliente</th><th>Produto</th><th>Valor total</th><th>Pagamento</th><th>Ações</th></tr></thead>
+                <tbody>
+                <tr th:each="venda : ${vendas}">
+                    <td th:text="${venda.idVenda}">1</td>
+                    <td th:text="${#temporals.format(venda.dataVenda, 'dd/MM/yyyy')}">01/01/2026</td>
+                    <td th:text="${venda.cliente.nomeCliente}">Cliente</td>
+                    <td th:text="${venda.produto.nomeProduto}">Produto</td>
+                    <td th:text="|R$ ${#numbers.formatDecimal(venda.valorTotal, 1, 2)}|">R$ 0,00</td>
+                    <td th:text="${venda.formaPagamento} ?: '-'">-</td>
+                    <td class="acoes">
+                        <a class="link-acao" th:href="@{/painel/vendas/{id}/editar(id=${venda.idVenda})}">Editar</a>
+                        <form method="post" th:action="@{/painel/vendas/{id}/excluir(id=${venda.idVenda})}"
+                              onsubmit="return confirm('Excluir esta venda?')">
+                            <button class="link perigo" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="vazio" th:if="${#lists.isEmpty(vendas)}">Nenhuma venda registrada ainda.</div>
+    </section>
+    <footer>As vendas também estão disponíveis pela API em <code>/vendas</code>.</footer>
+</main>
+</body>
+</html>

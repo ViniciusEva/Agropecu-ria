@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.agropecuaria.sistema_agropecuaria.SistemaAgropecuariaApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.84 s -- in com.agropecuaria.sistema_agropecuaria.SistemaAgropecuariaApplicationTests

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clientes | Agropecuária</title>
+    <link rel="stylesheet" th:href="@{/usuarios.css}">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div>
+            <p class="eyebrow">GESTÃO RURAL</p>
+            <h1>Clientes</h1>
+            <p class="subtitulo">Organize os dados dos clientes da agropecuária.</p>
+        </div>
+        <a class="botao principal" th:href="@{/painel/clientes/novo}">Novo cliente</a>
+    </header>
+    <nav class="navegacao" aria-label="Navegação principal">
+        <a th:href="@{/painel}">Visão geral</a>
+        <a class="selecionado" th:href="@{/painel/clientes}">Clientes</a>
+        <a th:href="@{/painel/produtos}">Produtos</a>
+        <a th:href="@{/painel/vendas}">Vendas</a>
+    </nav>
+
+    <div class="aviso sucesso" role="status" th:if="${mensagem}" th:text="${mensagem}"></div>
+    <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
+
+    <section class="painel">
+        <div class="barra">
+            <div>
+                <h2>Clientes cadastrados</h2>
+                <p><span th:text="${#lists.size(clientes)}">0</span> registro(s)</p>
+            </div>
+            <input id="pesquisa" type="search" aria-label="Pesquisar clientes" placeholder="Pesquisar cliente...">
+        </div>
+        <div class="tabela-rolagem">
+            <table aria-label="Clientes cadastrados">
+                <thead><tr><th>ID</th><th>Nome</th><th>CPF/CNPJ</th><th>Telefone</th><th>Cidade</th><th>Ações</th></tr></thead>
+                <tbody>
+                <tr class="linha" th:each="cliente : ${clientes}">
+                    <td th:text="${cliente.idCliente}">1</td>
+                    <td class="destaque" th:text="${cliente.nomeCliente}">Cliente</td>
+                    <td th:text="${cliente.cpfCnpj}">00000000000</td>
+                    <td th:text="${cliente.telefone} ?: '-'">-</td>
+                    <td th:text="${cliente.cidade} ?: '-'">-</td>
+                    <td class="acoes">
+                        <a class="link-acao" th:href="@{/painel/clientes/{id}/editar(id=${cliente.idCliente})}">Editar</a>
+                        <form method="post" th:action="@{/painel/clientes/{id}/excluir(id=${cliente.idCliente})}"
+                              onsubmit="return confirm('Excluir este cliente?')">
+                            <button class="link perigo" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="vazio" th:if="${#lists.isEmpty(clientes)}">Nenhum cliente cadastrado ainda.</div>
+        <div id="semResultado" class="vazio" hidden>Nenhum cliente corresponde à pesquisa.</div>
+    </section>
+    <footer>Os dados dos clientes também estão disponíveis pela API em <code>/clientes</code>.</footer>
+</main>
+<script>
+    const busca = document.getElementById('pesquisa');
+    const linhas = [...document.querySelectorAll('.linha')];
+    const vazio = document.getElementById('semResultado');
+    busca.addEventListener('input', () => {
+        const termo = busca.value.trim().toLocaleLowerCase('pt-BR');
+        let encontrados = 0;
+        linhas.forEach(linha => {
+            const corresponde = linha.textContent.toLocaleLowerCase('pt-BR').includes(termo);
+            linha.hidden = !corresponde;
+            if (corresponde) encontrados++;
+        });
+        vazio.hidden = encontrados !== 0 || linhas.length === 0;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Produtos | Agropecuária</title>
+    <link rel="stylesheet" th:href="@{/usuarios.css}">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div><p class="eyebrow">GESTÃO RURAL</p><h1>Produtos</h1><p class="subtitulo">Gerencie o catálogo e o estoque agropecuário.</p></div>
+        <a class="botao principal" th:href="@{/painel/produtos/novo}">Novo produto</a>
+    </header>
+    <nav class="navegacao" aria-label="Navegação principal">
+        <a th:href="@{/painel}">Visão geral</a><a th:href="@{/painel/clientes}">Clientes</a>
+        <a class="selecionado" th:href="@{/painel/produtos}">Produtos</a><a th:href="@{/painel/vendas}">Vendas</a>
+    </nav>
+    <div class="aviso sucesso" role="status" th:if="${mensagem}" th:text="${mensagem}"></div>
+    <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
+    <section class="painel">
+        <div class="barra">
+            <div><h2>Catálogo de produtos</h2><p><span th:text="${#lists.size(produtos)}">0</span> item(ns)</p></div>
+            <input id="pesquisa" type="search" aria-label="Pesquisar produtos" placeholder="Pesquisar produto...">
+        </div>
+        <div class="tabela-rolagem">
+            <table aria-label="Produtos cadastrados">
+                <thead><tr><th>ID</th><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Unidade</th><th>Ações</th></tr></thead>
+                <tbody>
+                <tr class="linha" th:each="produto : ${produtos}">
+                    <td th:text="${produto.idProduto}">1</td>
+                    <td class="destaque" th:text="${produto.nomeProduto}">Produto</td>
+                    <td th:text="${produto.categoriaProduto} ?: '-'">-</td>
+                    <td th:text="|R$ ${#numbers.formatDecimal(produto.precoProduto, 1, 2)}|">R$ 0,00</td>
+                    <td th:text="${produto.quantidadeEstoque}">0</td>
+                    <td th:text="${produto.unidadeMedida}">unidade</td>
+                    <td class="acoes">
+                        <a class="link-acao" th:href="@{/painel/produtos/{id}/editar(id=${produto.idProduto})}">Editar</a>
+                        <form method="post" th:action="@{/painel/produtos/{id}/excluir(id=${produto.idProduto})}"
+                              onsubmit="return confirm('Excluir este produto?')">
+                            <button class="link perigo" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="vazio" th:if="${#lists.isEmpty(produtos)}">Nenhum produto cadastrado ainda.</div>
+        <div id="semResultado" class="vazio" hidden>Nenhum produto corresponde à pesquisa.</div>
+    </section>
+    <footer>Os produtos também estão disponíveis pela API em <code>/produtos</code>.</footer>
+</main>
+<script>
+    const busca = document.getElementById('pesquisa');
+    const linhas = [...document.querySelectorAll('.linha')];
+    const vazio = document.getElementById('semResultado');
+    busca.addEventListener('input', () => {
+        const termo = busca.value.trim().toLocaleLowerCase('pt-BR');
+        let encontrados = 0;
+        linhas.forEach(linha => {
+            const corresponde = linha.textContent.toLocaleLowerCase('pt-BR').includes(termo);
+            linha.hidden = !corresponde;
+            if (corresponde) encontrados++;
+        });
+        vazio.hidden = encontrados !== 0 || linhas.length === 0;
+    });
+</script>
+</body>
+</html>

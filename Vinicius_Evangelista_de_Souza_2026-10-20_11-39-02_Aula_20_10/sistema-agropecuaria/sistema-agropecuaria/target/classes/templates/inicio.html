@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Painel | Agropecuária</title>
+    <link rel="stylesheet" th:href="@{/usuarios.css}">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div>
+            <p class="eyebrow">GESTÃO RURAL</p>
+            <h1>Agropecuária</h1>
+            <p class="subtitulo">Controle de clientes, produtos e vendas da propriedade.</p>
+        </div>
+        <span class="marca" aria-hidden="true">AG</span>
+    </header>
+
+    <nav class="navegacao" aria-label="Navegação principal">
+        <a class="selecionado" th:href="@{/painel}">Visão geral</a>
+        <a th:href="@{/painel/clientes}">Clientes</a>
+        <a th:href="@{/painel/produtos}">Produtos</a>
+        <a th:href="@{/painel/vendas}">Vendas</a>
+    </nav>
+
+    <section class="boas-vindas">
+        <p class="eyebrow">BEM-VINDO AO SISTEMA</p>
+        <h2>Gestão simples para o dia a dia no campo.</h2>
+        <p>Acompanhe seus cadastros e mantenha as informações da agropecuária organizadas.</p>
+    </section>
+
+    <section class="cartoes" aria-label="Resumo do sistema">
+        <a class="cartao" th:href="@{/painel/clientes}">
+            <span class="icone">01</span>
+            <span class="cartao-titulo">Clientes</span>
+            <strong th:text="${totalClientes}">0</strong>
+            <span>cadastros registrados</span>
+        </a>
+        <a class="cartao" th:href="@{/painel/produtos}">
+            <span class="icone">02</span>
+            <span class="cartao-titulo">Produtos</span>
+            <strong th:text="${totalProdutos}">0</strong>
+            <span>itens no catálogo</span>
+        </a>
+        <a class="cartao" th:href="@{/painel/vendas}">
+            <span class="icone">03</span>
+            <span class="cartao-titulo">Vendas</span>
+            <strong th:text="${totalVendas}">0</strong>
+            <span>operações registradas</span>
+        </a>
+    </section>
+
+    <footer>Sistema de gestão agropecuária · Spring Boot e Thymeleaf</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de produto | Agropecuária</title>
+    <link rel="stylesheet" th:href="@{/usuarios.css}">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div><p class="eyebrow">GESTÃO RURAL</p><h1 th:text="${edicao} ? 'Editar produto' : 'Novo produto'">Novo produto</h1>
+            <p class="subtitulo">Cadastre produtos e atualize as informações do estoque.</p></div>
+        <a class="botao secundario" th:href="@{/painel/produtos}">Voltar</a>
+    </header>
+    <nav class="navegacao" aria-label="Navegação principal">
+        <a th:href="@{/painel}">Visão geral</a><a th:href="@{/painel/clientes}">Clientes</a>
+        <a class="selecionado" th:href="@{/painel/produtos}">Produtos</a><a th:href="@{/painel/vendas}">Vendas</a>
+    </nav>
+    <section class="painel painel-form">
+        <form method="post" th:object="${produto}"
+              th:action="${edicao} ? @{/painel/produtos/{id}(id=${produto.idProduto})} : @{/painel/produtos}">
+            <div class="campos">
+                <label for="nomeProduto">Nome do produto <span>*</span>
+                    <input id="nomeProduto" type="text" th:field="*{nomeProduto}" required maxlength="100">
+                </label>
+                <label for="categoriaProduto">Categoria
+                    <input id="categoriaProduto" type="text" th:field="*{categoriaProduto}" maxlength="50" placeholder="Ex.: sementes, ferramentas">
+                </label>
+                <label for="precoProduto">Preço (R$) <span>*</span>
+                    <input id="precoProduto" type="number" th:field="*{precoProduto}" min="0" step="0.01" required>
+                </label>
+                <label for="quantidadeEstoque">Quantidade em estoque <span>*</span>
+                    <input id="quantidadeEstoque" type="number" th:field="*{quantidadeEstoque}" min="0" step="1" required>
+                </label>
+                <label for="unidadeMedida">Unidade de medida <span>*</span>
+                    <input id="unidadeMedida" type="text" th:field="*{unidadeMedida}" maxlength="20" required
+                           placeholder="Ex.: unidade, kg, litro, saco">
+                </label>
+            </div>
+            <div class="botoes">
+                <a class="botao secundario" th:href="@{/painel/produtos}">Cancelar</a>
+                <button class="botao principal" type="submit" th:text="${edicao} ? 'Salvar alterações' : 'Cadastrar produto'">Cadastrar produto</button>
+            </div>
+        </form>
+    </section>
+    <footer>Informe os valores em reais e o estoque disponível.</footer>
+</main>
+</body>
+</html>

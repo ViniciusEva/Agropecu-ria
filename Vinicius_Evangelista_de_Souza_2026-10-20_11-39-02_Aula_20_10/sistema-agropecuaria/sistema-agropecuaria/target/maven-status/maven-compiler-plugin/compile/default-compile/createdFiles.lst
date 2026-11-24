@@ -1,0 +1,12 @@
+com\agropecuaria\sistema_agropecuaria\controller\PainelController.class
+com\agropecuaria\sistema_agropecuaria\repository\ProdutoAgropecuarioRepository.class
+com\agropecuaria\sistema_agropecuaria\model\Venda.class
+com\agropecuaria\sistema_agropecuaria\controller\VendaController.class
+com\agropecuaria\sistema_agropecuaria\model\Cliente.class
+com\agropecuaria\sistema_agropecuaria\controller\ClienteController.class
+com\agropecuaria\sistema_agropecuaria\repository\VendaRepository.class
+com\agropecuaria\sistema_agropecuaria\SistemaAgropecuariaApplication.class
+com\agropecuaria\sistema_agropecuaria\model\ProdutoAgropecuario.class
+com\agropecuaria\sistema_agropecuaria\controller\InicioController.class
+com\agropecuaria\sistema_agropecuaria\repository\ClienteRepository.class
+com\agropecuaria\sistema_agropecuaria\controller\ProdutoAgropecuarioController.class

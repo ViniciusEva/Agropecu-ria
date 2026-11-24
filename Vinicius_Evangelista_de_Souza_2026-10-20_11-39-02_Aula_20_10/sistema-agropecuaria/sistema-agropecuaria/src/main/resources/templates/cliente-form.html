@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de cliente | Agropecuária</title>
+    <link rel="stylesheet" th:href="@{/usuarios.css}">
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <div>
+            <p class="eyebrow">GESTÃO RURAL</p>
+            <h1 th:text="${edicao} ? 'Editar cliente' : 'Novo cliente'">Novo cliente</h1>
+            <p class="subtitulo">Informe os dados para manter o cadastro atualizado.</p>
+        </div>
+        <a class="botao secundario" th:href="@{/painel/clientes}">Voltar</a>
+    </header>
+    <nav class="navegacao" aria-label="Navegação principal">
+        <a th:href="@{/painel}">Visão geral</a><a class="selecionado" th:href="@{/painel/clientes}">Clientes</a>
+        <a th:href="@{/painel/produtos}">Produtos</a><a th:href="@{/painel/vendas}">Vendas</a>
+    </nav>
+    <div class="aviso falha" role="alert" th:if="${erro}" th:text="${erro}"></div>
+    <section class="painel painel-form">
+        <form method="post" th:object="${cliente}"
+              th:action="${edicao} ? @{/painel/clientes/{id}(id=${cliente.idCliente})} : @{/painel/clientes}">
+            <div class="campos">
+                <label for="nomeCliente">Nome completo <span>*</span>
+                    <input id="nomeCliente" type="text" th:field="*{nomeCliente}" required maxlength="100" autocomplete="name">
+                </label>
+                <label for="cpfCnpj">CPF ou CNPJ <span>*</span>
+                    <input id="cpfCnpj" type="text" th:field="*{cpfCnpj}" required maxlength="20">
+                </label>
+                <label for="telefone">Telefone
+                    <input id="telefone" type="tel" th:field="*{telefone}" maxlength="20" autocomplete="tel">
+                </label>
+                <label for="cidade">Cidade
+                    <input id="cidade" type="text" th:field="*{cidade}" maxlength="50">
+                </label>
+            </div>
+            <div class="botoes">
+                <a class="botao secundario" th:href="@{/painel/clientes}">Cancelar</a>
+                <button class="botao principal" type="submit" th:text="${edicao} ? 'Salvar alterações' : 'Cadastrar cliente'">Cadastrar cliente</button>
+            </div>
+        </form>
+    </section>
+    <footer>O CPF/CNPJ deve ser único para cada cliente.</footer>
+</main>
+</body>
+</html>
